@@ -1,6 +1,5 @@
 /* eslint-disable max-params, max-lines */
 import Coordinates from './Coordinates';
-import { dateByAddingSeconds } from './DateUtils';
 import {
   degreesToRadians,
   normalizeToScale,
@@ -10,6 +9,10 @@ import {
 } from './MathUtils';
 import { Shafaq } from './Shafaq';
 import { ValueOf } from './TypeUtils';
+
+function dateByAddingSeconds(date: Date, seconds: number) {
+    return new Date(date.getTime() + seconds * 1000);
+}
 
 const Astronomical = {
   /* The geometric mean longitude of the sun in degrees. */
