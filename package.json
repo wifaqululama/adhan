@@ -7,16 +7,19 @@
   "main": "lib/cjs/Adhan.js",
   "module": "lib/esm/Adhan.js",
   "types": "lib/types/Adhan.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/Adhan.d.ts",
+      "import": "./lib/esm/Adhan.js",
+      "require": "./lib/cjs/Adhan.js"
+    }
+  },
   "scripts": {
     "clean": "rimraf lib",
+    "build": "tsdown",
     "test": "run-s -l test:*",
     "test:unit": "jest",
     "test:audit": "npm audit --omit=dev --audit-level=high",
-    "build": "npm-run-all -l clean -p build:*",
-    "build:esm": "cross-env BABEL_ENV=esmUnbundled babel src --extensions '.ts' --out-dir 'lib/esm' --source-maps",
-    "build:cjs": "cross-env BABEL_ENV=cjs babel src --extensions '.ts' --out-dir 'lib/cjs' --source-maps",
-    "build:bundles": "cross-env BABEL_ENV=esmBundled rollup -c",
-    "build:types": "tsc -b tsconfig.types.json",
     "lint": "run-p -l lint:*",
     "lint:eslint": "eslint --max-warnings=0 .",
     "lint:tsc": "tsc --noEmit",
@@ -43,14 +46,8 @@
     "namaz"
   ],
   "devDependencies": {
-    "@babel/cli": "^7.28.3",
-    "@babel/core": "^7.28.5",
-    "@babel/preset-env": "^7.28.5",
-    "@babel/preset-typescript": "^7.28.5",
     "@commitlint/cli": "^20.3.0",
     "@commitlint/config-conventional": "^20.3.0",
-    "@rollup/plugin-babel": "^6.1.0",
-    "@rollup/plugin-node-resolve": "^16.0.3",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.1",
     "@semantic-release/git": "^10.0.1",
@@ -62,7 +59,6 @@
     "@typescript-eslint/parser": "^8.51.0",
     "babel-loader": "^10.0.0",
     "commitizen": "^4.3.1",
-    "cross-env": "^10.1.0",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
@@ -76,10 +72,9 @@
     "prettier": "^3.7.4",
     "pretty-quick": "^4.2.2",
     "rimraf": "^6.1.2",
-    "rollup": "^4.54.0",
-    "rollup-plugin-terser": "^7.0.2",
     "semantic-release": "^25.0.2",
     "ts-jest": "^29.4.6",
+    "tsdown": "^0.19.0-beta.2",
     "typescript": "^5.9.3"
   },
   "overrides": {
