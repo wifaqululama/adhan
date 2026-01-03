@@ -1,6 +1,6 @@
 {
-  "name": "adhan",
-  "description": "High precision Islamic prayer time library",
+  "name": "@wifaqul-ulama/prayer-times",
+  "description": "High precision Islamic prayer time library. A fork of adhan",
   "version": "4.4.3",
   "author": "Ameir Al-Zoubi <ameir@ameir.com>",
   "license": "MIT",
