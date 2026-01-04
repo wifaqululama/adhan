@@ -94,4 +94,30 @@ export default class CalculationParameters {
         );
     }
   }
+
+  cloneParameters(
+    base: CalculationParameters,
+    updatedValues: Partial<CalculationParameters>,
+  ) {
+    const newParams = new CalculationParameters(
+      base.method,
+      base.fajrAngle,
+      base.ishaAngle,
+      base.ishaInterval,
+      base.maghribAngle,
+    );
+    newParams.madhab = updatedValues?.madhab
+      ? updatedValues.madhab
+      : base.madhab;
+    newParams.highLatitudeRule = updatedValues?.highLatitudeRule
+      ? updatedValues.highLatitudeRule
+      : base.highLatitudeRule;
+    newParams.highLatitudeFajrRule = updatedValues?.highLatitudeFajrRule
+      ? updatedValues.highLatitudeFajrRule
+      : base.highLatitudeFajrRule;
+    if (updatedValues.ishaAngle) {
+      newParams.ishaAngle = updatedValues.ishaAngle;
+    }
+    return newParams;
+  }
 }
