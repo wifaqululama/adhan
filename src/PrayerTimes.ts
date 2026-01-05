@@ -15,7 +15,6 @@ import {
   buildContext,
   totalAdjustment,
 } from './PrayerTimesCompute';
-import { Madhab } from './Madhab';
 
 export type PrayerTimesResult = {
   fajr: Date;
