@@ -7,11 +7,8 @@ import { Madhab } from './Madhab';
 import { PolarCircleResolution } from './PolarCircleResolution';
 import Prayer from './Prayer';
 import PrayerTimes from './PrayerTimes';
-import {
-  computePrayerTimes,
-  PrayerTimesResult,
-  timeForPrayer,
-} from './PrayerTimes';
+import { computePrayerTimes, timeForPrayer } from './PrayerTimes';
+import type { PrayerTimesResult } from './PrayerTimes';
 import Qibla from './Qibla';
 import { Rounding } from './Rounding';
 import { Shafaq } from './Shafaq';
