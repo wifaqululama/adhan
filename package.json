@@ -1,17 +1,17 @@
 {
   "name": "@wifaqululama/adhan",
   "description": "A fork of the High precision Islamic prayer time library, Adhan with Wifaqul Ulama methods and improvements for functional programming",
-  "version": "4.5.2",
+  "version": "4.5.3",
   "author": "Ameir Al-Zoubi <ameir@ameir.com>",
   "license": "MIT",
-  "main": "lib/cjs/Adhan.js",
-  "module": "lib/esm/Adhan.js",
-  "types": "lib/types/Adhan.d.ts",
+  "main": "./lib/Adhan.cjs",
+  "module": "./lib/Adhan.mjs",
+  "types": "./lib/Adhan.d.mts",
   "exports": {
     ".": {
-      "types": "./lib/types/Adhan.d.ts",
-      "import": "./lib/esm/Adhan.js",
-      "require": "./lib/cjs/Adhan.js"
+      "types": "./lib/Adhan.d.mts",
+      "import": "./lib/Adhan.mjs",
+      "require": "./lib/Adhan.cjs"
     }
   },
   "scripts": {
@@ -26,7 +26,8 @@
     "lint-fix": "npm-run-all -l -p lint-fix:* -s lint:tsc",
     "lint-fix:eslint": "eslint --max-warnings=0 --fix .",
     "commit": "cz",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "prepack": "pnpm build"
   },
   "repository": {
     "type": "git",
@@ -86,5 +87,13 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  }
+  },
+  "files": [
+    "lib/**",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "METHODS.md",
+    "MIGRATION.md"
+  ]
 }
