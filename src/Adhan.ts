@@ -24,7 +24,6 @@ export {
   CalculationMethod,
   PrayerTimes,
   computePrayerTimes,
-  PrayerTimesResult,
   timeForPrayer,
   SunnahTimes,
   Qibla,
@@ -32,3 +31,5 @@ export {
   Rounding,
   Shafaq,
 };
+
+export type { PrayerTimesResult };
