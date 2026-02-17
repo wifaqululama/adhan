@@ -1,7 +1,7 @@
 {
   "name": "@wifaqululama/adhan",
   "description": "A fork of the High precision Islamic prayer time library, Adhan with Wifaqul Ulama methods and improvements for functional programming",
-  "version": "4.5.4",
+  "version": "4.5.5",
   "author": "Ameir Al-Zoubi <ameir@ameir.com>",
   "license": "MIT",
   "main": "./lib/Adhan.cjs",
