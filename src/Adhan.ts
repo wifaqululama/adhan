@@ -6,13 +6,13 @@ import HighLatitudeFajrRule from './HighLatitudeFajrRule';
 import { Madhab } from './Madhab';
 import { PolarCircleResolution } from './PolarCircleResolution';
 import Prayer from './Prayer';
-import PrayerTimes from './PrayerTimes';
-import { computePrayerTimes, timeForPrayer } from './PrayerTimes';
+import PrayerTimes, { computePrayerTimes, timeForPrayer } from './PrayerTimes';
 import type { PrayerTimesResult } from './PrayerTimes';
 import Qibla from './Qibla';
 import { Rounding } from './Rounding';
 import { Shafaq } from './Shafaq';
 import SunnahTimes from './SunnahTimes';
+import type { ValueOf } from './TypeUtils';
 
 export {
   Prayer,
@@ -32,4 +32,4 @@ export {
   Shafaq,
 };
 
-export type { PrayerTimesResult };
+export type { PrayerTimesResult, ValueOf };
