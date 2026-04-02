@@ -57,6 +57,31 @@ jobs:
           EOF
         shell: bash
 
+      - name: Validate required variables
+        env:
+          GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+          GCP_REGION: ${{ vars.GCP_REGION }}
+          GCP_WORKLOAD_IDENTITY_PROVIDER: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          GCP_SERVICE_ACCOUNT: ${{ vars.GCP_SERVICE_ACCOUNT }}
+          NPM_ARTIFACT_REGISTRY_REPOSITORY: ${{ vars.NPM_ARTIFACT_REGISTRY_REPOSITORY }}
+        run: |
+          missing=0
+          for name in \
+            GCP_PROJECT_ID \
+            GCP_REGION \
+            GCP_WORKLOAD_IDENTITY_PROVIDER \
+            GCP_SERVICE_ACCOUNT \
+            NPM_ARTIFACT_REGISTRY_REPOSITORY
+          do
+            if [ -z "${!name}" ]; then
+              echo "Missing required GitHub Actions variable: ${name}"
+              missing=1
+            fi
+          done
+          if [ "$missing" -ne 0 ]; then
+            exit 1
+          fi
+
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v3
         with:
