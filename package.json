@@ -27,7 +27,7 @@
     "lint-fix:eslint": "eslint --max-warnings=0 --fix .",
     "commit": "cz",
     "prepare": "husky install",
-    "prepack": "pnpm build"
+    "prepack": "bun run build"
   },
   "repository": {
     "type": "git",
