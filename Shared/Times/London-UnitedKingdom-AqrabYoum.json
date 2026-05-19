@@ -17,7 +17,7 @@
     "Apr 01 (Mon)   04:36 am-1  06:30 am   01:09 pm   05:31 pm-1  07:39 pm-1  09:09 pm",
     "May 01 (Wed)   03:02 am    05:26 am   01:02 pm   06:05 pm-1  08:29 pm-1  09:43 pm",
     "Jun 01 (Sat)   01:09 am    04:44 am   01:03 pm   06:31 pm-1  09:14 pm    10:14 pm-1",
-    "Jul 01 (Mon)   01:09 am    04:43 am   01:09 pm   06:41 pm    09:26 pm    10:25 pm",
+    "Jul 01 (Mon)   01:09 am    04:38 am   01:09 pm   06:41 pm    09:26 pm    10:25 pm",
     "Aug 01 (Thu)   02:35 am-1  05:20 am   01:12 pm   06:23 pm    08:53 pm    10:02 pm",
     "Sep 01 (Sun)   04:09 am    06:09 am   01:05 pm   05:40 pm-1  07:51 pm    09:16 pm",
     "Oct 01 (Tue)   05:10 am    06:57 am   12:55 pm   04:43 pm+1  06:42 pm    08:09 pm",
@@ -82,7 +82,7 @@
     {
       "date": "2024-07-01",
       "fajr": "1:09 AM",
-      "sunrise": "4:43 AM",
+      "sunrise": "4:38 AM",
       "dhuhr": "1:09 PM",
       "asr": "6:41 PM",
       "maghrib": "9:26 PM",
