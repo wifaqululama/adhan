@@ -1,8 +1,13 @@
 /* eslint-disable max-lines */
 import moment from 'moment-timezone';
-import { dateByAddingSeconds, isValidDate } from '../src/DateUtils';
+import {
+  dateByAddingDays,
+  dateByAddingSeconds,
+  isValidDate,
+} from '../src/DateUtils';
 import { Madhab, shadowLength } from '../src/Madhab';
 import * as polarCircleResolver from '../src/PolarCircleResolution';
+import { Rounding } from '../src/Rounding';
 import { Shafaq } from '../src/Shafaq';
 import { ValueOf } from '../src/TypeUtils';
 import HighLatitudeRule from '../src/HighLatitudeRule';
@@ -983,7 +988,7 @@ describe('HighLatitudeFajr Aqrab Youm', () => {
     ).toBe('June 21, 2024 1:09 AM');
     expect(
       moment(p.sunrise).tz('Europe/London').format('MMMM DD, YYYY h:mm A'),
-    ).toBe('June 21, 2024 4:43 AM');
+    ).toBe('June 21, 2024 4:38 AM');
     expect(
       moment(p.dhuhr).tz('Europe/London').format('MMMM DD, YYYY h:mm A'),
     ).toBe('June 21, 2024 1:07 PM');
@@ -1038,6 +1043,31 @@ describe('HighLatitudeFajr MiddleOfTheNight', () => {
         fajr: 1 / 2,
         isha: 0.3,
       });
+    });
+    it('Should use adjusted sunrise and maghrib anchors for middle-of-the-night fajr', () => {
+      const calcParams = CalculationMethod.UnitedKingdom();
+      const londonCoordinates = new Coordinates(51.5113785, -0.1846385);
+      calcParams.highLatitudeFajrRule = HighLatitudeFajrRule.MiddleOfTheNight;
+      calcParams.adjustments.sunrise = 12;
+      calcParams.adjustments.maghrib = 3;
+      calcParams.rounding = Rounding.None;
+
+      const date = new Date(2024, 5, 21);
+      const prayerTimes = new PrayerTimes(londonCoordinates, date, calcParams);
+      const nextDayPrayerTimes = new PrayerTimes(
+        londonCoordinates,
+        dateByAddingDays(date, 1),
+        calcParams,
+      );
+      const adjustedNightDuration =
+        (nextDayPrayerTimes.sunrise.getTime() - prayerTimes.maghrib.getTime()) /
+        1000;
+      const expectedFajr = dateByAddingSeconds(
+        prayerTimes.sunrise,
+        -adjustedNightDuration / 2,
+      );
+
+      expect(prayerTimes.fajr).toEqual(expectedFajr);
     });
   });
   describe('Where highLatitudeRule is set to SeventhOfNight and highLatitudeFajr is unset', () => {
