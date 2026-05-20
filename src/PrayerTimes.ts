@@ -104,7 +104,6 @@ export default class PrayerTimes implements PrayerTimesResult {
   sunset: Date;
   maghrib: Date;
   isha: Date;
-
   constructor(
     public coordinates: Coordinates,
     public date: Date,
@@ -119,11 +118,9 @@ export default class PrayerTimes implements PrayerTimesResult {
     this.maghrib = t.maghrib;
     this.isha = t.isha;
   }
-
   timeForPrayer(prayer: ValueOf<typeof Prayer>) {
     return timeForPrayer(this, prayer);
   }
-
   currentPrayer(date = new Date()) {
     if (date >= this.isha) return Prayer.Isha;
     if (date >= this.maghrib) return Prayer.Maghrib;
@@ -133,7 +130,6 @@ export default class PrayerTimes implements PrayerTimesResult {
     if (date >= this.fajr) return Prayer.Fajr;
     return Prayer.None;
   }
-
   nextPrayer(date = new Date()) {
     if (date >= this.isha) return Prayer.None;
     if (date >= this.maghrib) return Prayer.Isha;

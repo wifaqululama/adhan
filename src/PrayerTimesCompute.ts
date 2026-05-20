@@ -15,6 +15,7 @@ import {
 } from './PolarCircleResolution';
 import { shadowLength } from './Madhab';
 import Astronomical from './Astronomical';
+import HighLatitudeRule from './HighLatitudeRule';
 import HighLatitudeFajrRule, {
   highLatitudeAqrabulAyyamResolver,
 } from './HighLatitudeFajrRule';
@@ -154,6 +155,7 @@ export function baseAsr(ctx: CalcContext) {
 export function baseFajr(ctx: CalcContext) {
   const {
     solarTime,
+    tomorrowSolarTime,
     coordinates,
     date,
     parameters: p,
@@ -161,6 +163,25 @@ export function baseFajr(ctx: CalcContext) {
   } = ctx;
 
   const sunriseTime = baseSunrise(ctx);
+  const sunsetTime = baseSunset(ctx);
+  const usesMiddleOfTheNightFajr =
+    p.highLatitudeFajrRule === HighLatitudeFajrRule.MiddleOfTheNight ||
+    (p.highLatitudeFajrRule === HighLatitudeFajrRule.Default &&
+      p.highLatitudeRule === HighLatitudeRule.MiddleOfTheNight);
+  const sunriseAdjustment = totalAdjustment(p, 'sunrise');
+  const maghribAdjustment = totalAdjustment(p, 'maghrib');
+  const adjustedSunriseTime = dateByAddingMinutes(sunriseTime, sunriseAdjustment);
+  const tomorrow = dateByAddingDays(date, 1);
+  const adjustedTomorrowSunrise = dateByAddingMinutes(
+    new TimeComponents(tomorrowSolarTime.sunrise).utcDate(tomorrow),
+    sunriseAdjustment,
+  );
+  const adjustedMaghribAnchor = dateByAddingMinutes(
+    sunsetTime,
+    maghribAdjustment,
+  );
+  const adjustedNightSeconds =
+    (Number(adjustedTomorrowSunrise) - Number(adjustedMaghribAnchor)) / 1000;
 
   let fajrTime = new TimeComponents(
     solarTime.hourAngle(-1 * p.fajrAngle, false),
@@ -203,8 +224,12 @@ export function baseFajr(ctx: CalcContext) {
     }
 
     const portion = p.nightPortions().fajr;
-    const nightFraction = portion * night;
-    return dateByAddingSeconds(sunriseTime, -nightFraction);
+    const fajrNight = usesMiddleOfTheNightFajr ? adjustedNightSeconds : night;
+    const fajrSunrise = usesMiddleOfTheNightFajr
+      ? adjustedSunriseTime
+      : sunriseTime;
+    const nightFraction = portion * fajrNight;
+    return dateByAddingSeconds(fajrSunrise, -nightFraction);
   })();
 
   if (isNaN(fajrTime.getTime()) || safeFajr > fajrTime) {
