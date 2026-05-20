@@ -18,6 +18,7 @@ import {
   polarCircleResolvedValues,
 } from './PolarCircleResolution';
 import { ValueOf } from './TypeUtils';
+import HighLatitudeRule from './HighLatitudeRule';
 import HighLatitudeFajrRule, {
   highLatitudeAqrabulAyyamResolver,
 } from './HighLatitudeFajrRule';
@@ -84,6 +85,47 @@ export default class PrayerTimes {
     ).utcDate(tomorrow);
     const night = (Number(tomorrowSunrise) - Number(sunsetTime)) / 1000;
 
+    const fajrAdjustment =
+      (calculationParameters.adjustments.fajr || 0) +
+      (calculationParameters.methodAdjustments.fajr || 0);
+    const sunriseAdjustment =
+      (calculationParameters.adjustments.sunrise || 0) +
+      (calculationParameters.methodAdjustments.sunrise || 0);
+    const dhuhrAdjustment =
+      (calculationParameters.adjustments.dhuhr || 0) +
+      (calculationParameters.methodAdjustments.dhuhr || 0);
+    const asrAdjustment =
+      (calculationParameters.adjustments.asr || 0) +
+      (calculationParameters.methodAdjustments.asr || 0);
+    const maghribAdjustment =
+      (calculationParameters.adjustments.maghrib || 0) +
+      (calculationParameters.methodAdjustments.maghrib || 0);
+    const ishaAdjustment =
+      (calculationParameters.adjustments.isha || 0) +
+      (calculationParameters.methodAdjustments.isha || 0);
+
+    const usesMiddleOfTheNightFajr =
+      calculationParameters.highLatitudeFajrRule ===
+        HighLatitudeFajrRule.MiddleOfTheNight ||
+      (calculationParameters.highLatitudeFajrRule ===
+        HighLatitudeFajrRule.Default &&
+        calculationParameters.highLatitudeRule ===
+          HighLatitudeRule.MiddleOfTheNight);
+    const adjustedSunriseTime = dateByAddingMinutes(
+      sunriseTime,
+      sunriseAdjustment,
+    );
+    const adjustedTomorrowSunrise = dateByAddingMinutes(
+      tomorrowSunrise,
+      sunriseAdjustment,
+    );
+    const adjustedMaghribAnchor = dateByAddingMinutes(
+      sunsetTime,
+      maghribAdjustment,
+    );
+    const adjustedNight =
+      (Number(adjustedTomorrowSunrise) - Number(adjustedMaghribAnchor)) / 1000;
+
     fajrTime = new TimeComponents(
       solarTime.hourAngle(-1 * calculationParameters.fajrAngle, false),
     ).utcDate(date);
@@ -129,8 +171,12 @@ export default class PrayerTimes {
         ).utcDate(date);
       } else {
         const portion = calculationParameters.nightPortions().fajr;
-        nightFraction = portion * night;
-        return dateByAddingSeconds(sunriseTime, -nightFraction);
+        const fajrNight = usesMiddleOfTheNightFajr ? adjustedNight : night;
+        const fajrSunrise = usesMiddleOfTheNightFajr
+          ? adjustedSunriseTime
+          : sunriseTime;
+        nightFraction = portion * fajrNight;
+        return dateByAddingSeconds(fajrSunrise, -nightFraction);
       }
     })();
 
@@ -187,25 +233,6 @@ export default class PrayerTimes {
         maghribTime = angleBasedMaghrib;
       }
     }
-
-    const fajrAdjustment =
-      (calculationParameters.adjustments.fajr || 0) +
-      (calculationParameters.methodAdjustments.fajr || 0);
-    const sunriseAdjustment =
-      (calculationParameters.adjustments.sunrise || 0) +
-      (calculationParameters.methodAdjustments.sunrise || 0);
-    const dhuhrAdjustment =
-      (calculationParameters.adjustments.dhuhr || 0) +
-      (calculationParameters.methodAdjustments.dhuhr || 0);
-    const asrAdjustment =
-      (calculationParameters.adjustments.asr || 0) +
-      (calculationParameters.methodAdjustments.asr || 0);
-    const maghribAdjustment =
-      (calculationParameters.adjustments.maghrib || 0) +
-      (calculationParameters.methodAdjustments.maghrib || 0);
-    const ishaAdjustment =
-      (calculationParameters.adjustments.isha || 0) +
-      (calculationParameters.methodAdjustments.isha || 0);
 
     this.fajr = roundedMinute(
       dateByAddingMinutes(fajrTime, fajrAdjustment),
