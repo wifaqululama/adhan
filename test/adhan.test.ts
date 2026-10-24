@@ -42,10 +42,10 @@ test('Verifying the night portion defined by the high latitude rule', () => {
     }
   ).fake;
   expect(() => {
-    p4.nightPortions().fajr;
+    return p4.nightPortions().fajr;
   }).toThrow();
   expect(() => {
-    p4.nightPortions().isha;
+    return p4.nightPortions().isha;
   }).toThrow();
 });
 
@@ -150,8 +150,12 @@ test('UK sunrise retains the original time for Stretford on 20 October 2026', ()
   params.methodAdjustments.sunrise = -5;
   const previous = new PrayerTimes(coordinates, date, params);
 
-  expect(moment(restored.sunrise).tz('Europe/London').format('HH:mm')).toBe('07:45');
-  expect(moment(previous.sunrise).tz('Europe/London').format('HH:mm')).toBe('07:40');
+  expect(moment(restored.sunrise).tz('Europe/London').format('HH:mm')).toBe(
+    '07:45',
+  );
+  expect(moment(previous.sunrise).tz('Europe/London').format('HH:mm')).toBe(
+    '07:40',
+  );
   for (const prayer of ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'] as const) {
     expect(restored[prayer]).toEqual(previous[prayer]);
   }

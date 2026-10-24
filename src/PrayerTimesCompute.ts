@@ -170,7 +170,10 @@ export function baseFajr(ctx: CalcContext) {
       p.highLatitudeRule === HighLatitudeRule.MiddleOfTheNight);
   const sunriseAdjustment = totalAdjustment(p, 'sunrise');
   const maghribAdjustment = totalAdjustment(p, 'maghrib');
-  const adjustedSunriseTime = dateByAddingMinutes(sunriseTime, sunriseAdjustment);
+  const adjustedSunriseTime = dateByAddingMinutes(
+    sunriseTime,
+    sunriseAdjustment,
+  );
   const tomorrow = dateByAddingDays(date, 1);
   const adjustedTomorrowSunrise = dateByAddingMinutes(
     new TimeComponents(tomorrowSolarTime.sunrise).utcDate(tomorrow),
