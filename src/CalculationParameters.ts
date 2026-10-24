@@ -106,13 +106,13 @@ export default class CalculationParameters {
       base.ishaInterval,
       base.maghribAngle,
     );
-    newParams.madhab = updatedValues?.madhab
+    newParams.madhab = updatedValues.madhab
       ? updatedValues.madhab
       : base.madhab;
-    newParams.highLatitudeRule = updatedValues?.highLatitudeRule
+    newParams.highLatitudeRule = updatedValues.highLatitudeRule
       ? updatedValues.highLatitudeRule
       : base.highLatitudeRule;
-    newParams.highLatitudeFajrRule = updatedValues?.highLatitudeFajrRule
+    newParams.highLatitudeFajrRule = updatedValues.highLatitudeFajrRule
       ? updatedValues.highLatitudeFajrRule
       : base.highLatitudeFajrRule;
     if (updatedValues.ishaAngle) {

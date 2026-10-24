@@ -11,7 +11,7 @@ import { Shafaq } from './Shafaq';
 import { ValueOf } from './TypeUtils';
 
 function dateByAddingSeconds(date: Date, seconds: number) {
-    return new Date(date.getTime() + seconds * 1000);
+  return new Date(date.getTime() + seconds * 1000);
 }
 
 const Astronomical = {
