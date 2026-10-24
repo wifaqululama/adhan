@@ -105,7 +105,7 @@ const CalculationMethod = {
     params.madhab = Madhab.Hanafi;
     params.methodAdjustments = {
       ...params.methodAdjustments,
-      sunrise: -5,
+      sunrise: 0,
       dhuhr: 4,
       maghrib: 5,
     };

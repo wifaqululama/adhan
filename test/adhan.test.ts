@@ -133,12 +133,28 @@ test('Verifying the angles defined by the calculation method', () => {
   expect(p14.ishaAngle).toBe(15);
   expect(p14.ishaInterval).toBe(0);
   expect(p14.method).toBe('UnitedKingdom');
+  expect(p14.methodAdjustments.sunrise).toBe(0);
 
   const p15 = new CalculationParameters(null, 18, 17);
   expect(p15.fajrAngle).toBe(18);
   expect(p15.ishaAngle).toBe(17);
   expect(p15.ishaInterval).toBe(0);
   expect(p15.method).toBe('Other');
+});
+
+test('UK sunrise retains the original time for Stretford on 20 October 2026', () => {
+  const coordinates = new Coordinates(53.4466, -2.3086);
+  const date = new Date(2026, 9, 20);
+  const params = CalculationMethod.UnitedKingdom();
+  const restored = new PrayerTimes(coordinates, date, params);
+  params.methodAdjustments.sunrise = -5;
+  const previous = new PrayerTimes(coordinates, date, params);
+
+  expect(moment(restored.sunrise).tz('Europe/London').format('HH:mm')).toBe('07:45');
+  expect(moment(previous.sunrise).tz('Europe/London').format('HH:mm')).toBe('07:40');
+  for (const prayer of ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'] as const) {
+    expect(restored[prayer]).toEqual(previous[prayer]);
+  }
 });
 
 test('calculating prayer times', () => {
@@ -988,7 +1004,7 @@ describe('HighLatitudeFajr Aqrab Youm', () => {
     ).toBe('June 21, 2024 1:09 AM');
     expect(
       moment(p.sunrise).tz('Europe/London').format('MMMM DD, YYYY h:mm A'),
-    ).toBe('June 21, 2024 4:38 AM');
+    ).toBe('June 21, 2024 4:43 AM');
     expect(
       moment(p.dhuhr).tz('Europe/London').format('MMMM DD, YYYY h:mm A'),
     ).toBe('June 21, 2024 1:07 PM');
